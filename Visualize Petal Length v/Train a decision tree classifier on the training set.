@@ -1,0 +1,57 @@
+# Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+# -------------------------------
+# Load dataset safely
+# -------------------------------
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'feature1': [5, 7, 6, 9, 8],
+        'feature2': [1, 0, 1, 0, 1],
+        'category': ['A', 'B', 'A', 'B', 'A'],
+        'target': [0, 1, 0, 1, 0]
+    })
+
+print("Dataset:\n", df.head())
+
+# -------------------------------
+# Fix column names
+# -------------------------------
+df.columns = df.columns.str.strip().str.lower()
+
+# -------------------------------
+# Define target and features
+# -------------------------------
+# Replace 'target' with your actual column if needed
+if 'target' not in df.columns:
+    print("Available columns:", df.columns)
+    raise Exception("❌ Target column not found")
+
+y = df['target']
+X = df.drop('target', axis=1)
+
+# -------------------------------
+# Handle categorical data
+# -------------------------------
+X = pd.get_dummies(X, drop_first=True)
+
+# -------------------------------
+# Train-test split (80-20)
+# -------------------------------
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# -------------------------------
+# Train Decision Tree model
+# -------------------------------
+model = DecisionTreeClassifier(random_state=42)
+
+model.fit(X_train, y_train)
+
+print("\nModel trained successfully ✅")
