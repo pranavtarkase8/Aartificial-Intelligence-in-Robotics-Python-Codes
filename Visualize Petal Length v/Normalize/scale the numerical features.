@@ -1,0 +1,11 @@
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+
+# Select only numerical columns
+num_cols = df.select_dtypes(include=np.number).columns
+
+# Apply scaling
+df[num_cols] = scaler.fit_transform(df[num_cols])
+
+print("\nAfter Min-Max Scaling:\n", df)
