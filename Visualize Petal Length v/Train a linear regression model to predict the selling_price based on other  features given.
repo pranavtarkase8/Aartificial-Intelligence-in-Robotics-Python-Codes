@@ -1,0 +1,61 @@
+
+import pandas as pd
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+
+
+try:
+    df = pd.read_csv("data.csv")
+except Exception as e:
+    print("Error loading file → using sample dataset")
+    df = pd.DataFrame({
+        'year': [2015, 2016, 2017, 2018, 2019],
+        'km_driven': [50000, 30000, 40000, 25000, 15000],
+        'fuel': ['Petrol', 'Diesel', 'Petrol', 'Diesel', 'Petrol'],
+        'selling_price': [300000, 400000, 350000, 450000, 500000]
+    })
+
+print("\nDataset Loaded Successfully!\n")
+print(df.head())
+
+
+df.columns = df.columns.str.strip().str.lower()
+
+
+if 'selling_price' not in df.columns:
+    print("\nAvailable columns:", df.columns)
+    raise Exception("❌ 'selling_price' column not found. Check spelling!")
+
+
+for col in df.select_dtypes(include=np.number).columns:
+    df[col] = df[col].fillna(df[col].mean())
+
+# Fill categorical with mode
+for col in df.select_dtypes(include='object').columns:
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+
+X = df.drop('selling_price', axis=1)
+y = df['selling_price']
+
+
+X = pd.get_dummies(X, drop_first=True)
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+
+print("\nModel trained successfully ✅")
+print("\nSample Predictions:\n", y_pred[:5])
