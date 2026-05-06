@@ -1,0 +1,47 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+
+# -------------------------------
+# Load dataset safely
+# -------------------------------
+# If file not found, create sample data
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'A': [1, 2, np.nan, 4],
+        'B': [5, np.nan, 7, 8],
+        'C': ['x', 'y', np.nan, 'z']
+    })
+
+# -------------------------------
+# Check missing values
+# -------------------------------
+print("Missing values before:\n", df.isnull().sum())
+
+# -------------------------------
+# Fill numerical columns with mean
+# -------------------------------
+num_cols = df.select_dtypes(include=np.number).columns
+df[num_cols] = df[num_cols].fillna(df[num_cols].mean())
+
+# -------------------------------
+# Fill categorical columns with mode
+# -------------------------------
+cat_cols = df.select_dtypes(include='object').columns
+for col in cat_cols:
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+# -------------------------------
+# Verify after handling
+# -------------------------------
+print("\nMissing values after:\n", df.isnull().sum())
+
+# -------------------------------
+# Optional: Drop remaining (if any)
+# -------------------------------
+df = df.dropna()
+
+print("\nFinal Data:\n", df)
