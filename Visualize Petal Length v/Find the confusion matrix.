@@ -1,0 +1,12 @@
+import pandas as pd
+from sklearn.metrics import confusion_matrix
+
+cm = confusion_matrix(y_test, y_pred)
+
+cm_df = pd.DataFrame(
+    cm,
+    index=["Setosa", "Versicolor", "Virginica"],
+    columns=["Setosa", "Versicolor", "Virginica"]
+)
+
+print(cm_df)
