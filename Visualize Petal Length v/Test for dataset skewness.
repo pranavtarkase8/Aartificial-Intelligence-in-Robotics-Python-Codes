@@ -1,0 +1,44 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+
+# -------------------------------
+# Load dataset safely
+# -------------------------------
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'A': [1, 2, 3, 4, 100],   # skewed
+        'B': [10, 20, 30, 40, 50],
+        'C': [5, 5, 5, 5, 5]
+    })
+
+print("Dataset:\n", df)
+
+# -------------------------------
+# Select only numeric columns
+# -------------------------------
+num_df = df.select_dtypes(include=np.number)
+
+# -------------------------------
+# Handle missing values (important)
+# -------------------------------
+num_df = num_df.fillna(num_df.mean())
+
+# -------------------------------
+# Calculate skewness
+# -------------------------------
+skew_values = num_df.skew()
+
+print("\nSkewness of numerical features:\n")
+print(skew_values)
+
+# -------------------------------
+# Identify high skew features
+# -------------------------------
+high_skew = skew_values[abs(skew_values) > 1]
+
+print("\nHighly Skewed Features (|skew| > 1):\n")
+print(high_skew)
