@@ -1,0 +1,39 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+
+# Load dataset safely
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'A': [1, 2, 3, 4, 5],
+        'B': [2, 4, 6, 8, 10],   # highly correlated with A
+        'C': [5, 3, 6, 2, 1],
+        'D': [10, 20, 30, 40, 50] # highly correlated with B
+    })
+
+print("Dataset:\n", df)
+# correletaion matrix
+corr_matrix = df.corr(numeric_only=True)
+
+print("\nCorrelation Matrix:\n")
+print(corr_matrix)
+
+#Find Highly Correlated Features (Threshold > 0.8)
+threshold = 0.8
+
+# Create empty list for highly correlated pairs
+high_corr = []
+
+for i in range(len(corr_matrix.columns)):
+    for j in range(i):
+        if abs(corr_matrix.iloc[i, j]) > threshold:
+            col1 = corr_matrix.columns[i]
+            col2 = corr_matrix.columns[j]
+            high_corr.append((col1, col2, corr_matrix.iloc[i, j]))
+
+print("\nHighly Correlated Features (|corr| > 0.8):")
+for item in high_corr:
+    print(item)
