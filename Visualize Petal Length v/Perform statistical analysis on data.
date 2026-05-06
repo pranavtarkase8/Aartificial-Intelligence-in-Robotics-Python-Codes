@@ -1,0 +1,16 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+
+# Load dataset safely
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'A': [10, 20, 30, 40, 50],
+        'B': [5, 15, 25, 35, 45],
+        'C': [100, 200, 300, 400, 500]
+    })
+
+print("Dataset:\n", df)
