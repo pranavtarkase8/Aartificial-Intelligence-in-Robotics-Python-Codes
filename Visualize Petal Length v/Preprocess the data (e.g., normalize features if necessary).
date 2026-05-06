@@ -1,0 +1,52 @@
+# Import libraries
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+
+# -------------------------------
+# Load dataset
+# -------------------------------
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'feature1': [10, 20, 30, 40, 50],
+        'feature2': [100, 200, 300, 400, 500],
+        'category': ['A', 'B', 'A', 'B', 'A'],
+        'target': [0, 1, 0, 1, 0]
+    })
+
+print("Original Data:\n", df)
+
+# -------------------------------
+# 1. Handle missing values
+# -------------------------------
+df.fillna(df.mean(numeric_only=True), inplace=True)
+
+for col in df.select_dtypes(include='object'):
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+# -------------------------------
+# 2. Encode categorical features
+# -------------------------------
+df = pd.get_dummies(df, drop_first=True)
+
+# -------------------------------
+# 3. Split features and target
+# -------------------------------
+X = df.drop('target', axis=1)
+y = df['target']
+
+# -------------------------------
+# 4. Normalize / Scale features
+# -------------------------------
+
+# Option A: Min-Max Scaling (0 to 1)
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Convert back to DataFrame
+X_scaled = pd.DataFrame(X_scaled, columns=X.columns)
+
+print("\nNormalized Data (Min-Max Scaling):\n", X_scaled.head())
