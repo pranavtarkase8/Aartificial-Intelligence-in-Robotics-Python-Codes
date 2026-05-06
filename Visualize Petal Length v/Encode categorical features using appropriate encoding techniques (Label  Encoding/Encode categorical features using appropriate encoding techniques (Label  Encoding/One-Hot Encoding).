@@ -1,0 +1,10 @@
+import pandas as pd
+
+# Sample dataset
+df = pd.DataFrame({
+    'Color': ['Red', 'Blue', 'Green', 'Blue'],
+    'Size': ['S', 'M', 'L', 'S'],
+    'Price': [100, 150, 200, 130]
+})
+
+print("Original Data:\n", df)
