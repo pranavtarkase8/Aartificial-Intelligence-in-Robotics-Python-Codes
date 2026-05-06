@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sample dataset (safe)
+df = pd.DataFrame({
+    'age': [18, 22, 25, 30, 35, 40, 45, 50],
+    'annual_income': [20000, 25000, 30000, 50000, 60000, 70000, 80000, 90000]
+})
+
+# -------------------------------
+# Age Distribution
+# -------------------------------
+plt.figure()
+plt.hist(df['age'], bins=5, edgecolor='black')
+plt.title("Age Distribution")
+plt.xlabel("Age")
+plt.ylabel("Frequency")
+plt.show()
+
+# -------------------------------
+# Income Distribution
+# -------------------------------
+plt.figure()
+plt.hist(df['annual_income'], bins=5, edgecolor='black')
+plt.title("Annual Income Distribution")
+plt.xlabel("Annual Income")
+plt.ylabel("Frequency")
+plt.show()
+
+# -------------------------------
+# Scatter Plot
+# -------------------------------
+plt.figure()
+plt.scatter(df['age'], df['annual_income'])
+plt.title("Age vs Annual Income")
+plt.xlabel("Age")
+plt.ylabel("Annual Income")
+plt.show()
