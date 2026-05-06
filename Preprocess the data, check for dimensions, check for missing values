@@ -1,0 +1,27 @@
+import pandas as pd
+import numpy as np
+df = pd.read_csv("data.csv")
+print("First 5 rows:")
+print(df.head())
+print("\nShape of dataset (rows, columns):")
+print(df.shape)
+print("\nColumn names:")
+print(df.columns)
+print("\nData types:")
+print(df.dtypes)
+print("\nMissing values in each column:")
+print(df.isnull().sum())
+df.fillna(df.mean(numeric_only=True), inplace=True)
+for col in df.select_dtypes(include='object'):
+    df[col].fillna(df[col].mode()[0], inplace=True)
+print("\nMissing values after handling:")
+print(df.isnull().sum())
+df.drop_duplicates(inplace=True)
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+num_cols = df.select_dtypes(include=np.number).columns
+df[num_cols] = scaler.fit_transform(df[num_cols])
+df = pd.get_dummies(df, drop_first=True)
+print("\nProcessed Data:")
+print(df.head())
