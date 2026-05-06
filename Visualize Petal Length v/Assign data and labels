@@ -1,0 +1,27 @@
+#Assign Data and Labels
+# Import libraries
+import pandas as pd
+
+# Load dataset safely
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'feature1': [1, 2, 3, 4, 5],
+        'feature2': [10, 20, 30, 40, 50],
+        'feature3': [5, 4, 3, 2, 1],
+        'label': [0, 1, 0, 1, 0]
+    })
+
+print("Dataset:\n", df)
+
+#. Assign Features (Data)
+X = df.drop('label', axis=1)
+
+print("\nFeatures (X):\n", X)
+
+#assign lables (Target)
+y = df['label']
+
+print("\nLabels (y):\n", y)
