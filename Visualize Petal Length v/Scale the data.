@@ -1,0 +1,28 @@
+# Import libraries
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Load dataset safely
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'feature1': [10, 20, 30, 40, 50],
+        'feature2': [100, 200, 300, 400, 500],
+        'feature3': [5, 3, 6, 2, 1]
+    })
+
+print("Original Data:\n", df)
+
+X = df.select_dtypes(include=['int64', 'float64'])
+
+print("\nFeatures before scaling:\n", X)
+scaler = StandardScaler()
+
+X_scaled = scaler.fit_transform(X)
+
+# Convert back to DataFrame
+X_scaled = pd.DataFrame(X_scaled, columns=X.columns)
+
+print("\nScaled Data (Standardized):\n", X_scaled)
