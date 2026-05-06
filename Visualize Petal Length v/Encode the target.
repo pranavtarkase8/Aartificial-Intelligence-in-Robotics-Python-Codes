@@ -1,0 +1,25 @@
+# Import libraries
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+# Load dataset safely
+try:
+    df = pd.read_csv("data.csv")
+except:
+    print("data.csv not found → using sample dataset")
+    df = pd.DataFrame({
+        'feature1': [1, 2, 3, 4, 5],
+        'feature2': [10, 20, 30, 40, 50],
+        'target': ['Yes', 'No', 'Yes', 'No', 'Yes']
+    })
+
+print("Original Data:\n", df)
+
+# -------------------------------
+# Encode target variable
+# -------------------------------
+le = LabelEncoder()
+
+df['target_encoded'] = le.fit_transform(df['target'])
+
+print("\nAfter Encoding Target:\n", df)
