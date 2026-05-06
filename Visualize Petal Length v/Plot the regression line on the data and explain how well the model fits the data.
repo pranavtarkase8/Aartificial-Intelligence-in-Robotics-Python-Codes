@@ -1,0 +1,21 @@
+import matplotlib.pyplot as plt
+
+# Select one feature (example)
+X_single = X[['km_driven']]
+
+# Train model again with single feature
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X_single, y)
+
+# Predictions
+y_pred_line = model.predict(X_single)
+
+# Plot
+plt.scatter(X_single, y)
+plt.plot(X_single, y_pred_line)
+
+plt.xlabel("km_driven")
+plt.ylabel("selling_price")
+plt.title("Regression Line")
+plt.show()
