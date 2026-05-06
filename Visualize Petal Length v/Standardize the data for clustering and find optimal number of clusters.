@@ -16,3 +16,20 @@ except:
     })
 
 print("Dataset:\n", df)
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+print("\nStandardized Data:\n", X_scaled)
+
+#find optimal k (elbow method)
+wcss = []  # Within Cluster Sum of Squares
+
+k_values = range(1, 11)
+
+for k in k_values:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(X_scaled)
+    wcss.append(kmeans.inertia_)
+
+print("WCSS Values:", wcss)
